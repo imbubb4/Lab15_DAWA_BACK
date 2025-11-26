@@ -6,8 +6,19 @@ const authRouter = require('./routes/auth');
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// CORS
+const allowedOrigins = [
+  'http://localhost:3000',          // frontend en desarrollo
+  process.env.FRONTEND_URL,         // frontend en Vercel (producción)
+].filter(Boolean);                  // saca los undefined
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    // si algún día necesitas cookies, acá pones credentials: true
+  })
+);
+
 app.use(express.json());
 
 // Rutas
